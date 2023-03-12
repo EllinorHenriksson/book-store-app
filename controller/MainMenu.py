@@ -5,6 +5,7 @@ class MainMenu:
         self.view = view
     def run(self):
         """Runs the main menu"""
+        self.view.print_text("********** Welcome to the Book Store **********")
         run_app = True
         while run_app:
             self.view.print_menu()
