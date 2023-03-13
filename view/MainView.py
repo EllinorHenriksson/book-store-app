@@ -16,7 +16,10 @@ class MainView:
     def print_register_header(self):
         print("\n----- Register -----")
 
-    def print_error(self, message):
+    def print_registration_success(self):
+        print("Successfully registered!")
+
+    def print_error_message(self, message):
         """Prints error message."""
         print(message)
 

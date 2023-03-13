@@ -1,4 +1,5 @@
 from view.actions.MainMenuActions import MainMenuActions
+from model.errors.DBError import DBError
 
 class MainMenu:
     def __init__(self, view, member_model):
@@ -20,7 +21,7 @@ class MainMenu:
                 else:
                     run_app = False
             except ValueError as error:
-                self.view.print_error(str(error))
+                self.view.print_error_message(str(error))
 
         self.quit_app()
 
@@ -39,7 +40,11 @@ class MainMenu:
             "phone": self.get_input("phone")
         }
 
-        self.member_model.create_member(member)
+        try:
+            self.member_model.create_member(member)
+            self.view.print_registration_success()
+        except DBError as error:
+            self.view.print_error_message(str(error))
 
     def get_email(self):
         is_email_unique = False
@@ -49,11 +54,11 @@ class MainMenu:
                 is_email_unique = self.member_model.is_email_unique(email)
 
                 if not is_email_unique:
-                    self.view.print_error("Email is already registered")
+                    self.view.print_error_message("Email is already registered")
                 else:
                     return email
-            except (ValueError) as error:
-                self.view.print_error(str(error))
+            except (ValueError, DBError) as error:
+                self.view.print_error_message(str(error))
 
     def get_input(self, input_type):
         input = None
@@ -62,7 +67,7 @@ class MainMenu:
                 input = self.view.get_input(input_type)
                 return input
             except (ValueError) as error:
-                self.view.print_error(str(error))
+                self.view.print_error_message(str(error))
 
     def login(self):
         print("Login")
