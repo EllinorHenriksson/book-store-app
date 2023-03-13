@@ -23,7 +23,8 @@ class MainMenu:
         self.quit_app()
 
     def register(self):
-        print("Register")
+        # Hämta info från view
+        # För över till databas via model
 
     def login(self):
         print("Login")
