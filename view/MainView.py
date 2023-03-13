@@ -1,18 +1,24 @@
-from controller.MainMenuActions import MainMenuActions
-from model.Member import Member
+from view.actions.MainMenuActions import MainMenuActions
 
 class MainView:
     def __init__(self, validator):
         self.validator = validator
         self.menu = "\n***** Main Menu *****\nr : Register\nl : Login\nq : Quit"
 
-    def print_text(self, text):
-        """Prints the given text."""
-        print(text)
+    def print_welcome_message(self):
+        """Prints a welcome message."""
+        print("########## Welcome to the Book Store ##########")
 
     def print_menu(self):
         """Prints the menu."""
         print(self.menu)
+
+    def print_register_header(self):
+        print("\n----- Register -----")
+
+    def print_error(self, message):
+        """Prints error message."""
+        print(message)
 
     def get_action(self):
         """
@@ -22,7 +28,7 @@ class MainView:
         -------
         MainMenuAction
         """
-        value = input("Enter menu choice: ")
+        value = input("Menu choice: ")
 
         for action in MainMenuActions:
             if value == action.value:
@@ -30,8 +36,32 @@ class MainView:
 
         raise ValueError(value + " is not a vaild menu choice")
 
-    def print_error(self, message):
-        print(message)
+    def get_input(self, input_type):
+        match input_type:
+            case "email":
+                return self.get_email()
+            case "password":
+                return self.get_password()
+            case "fname":
+                return self.get_fname()
+            case "lname":
+                return self.get_lname()
+            case "address":
+                return self.get_address()
+            case "zip_code":
+                return self.get_zip_code()
+            case "city":
+                return self.get_city()
+            case "state":
+                return self.get_state()
+            case "phone":
+                return self.get_phone()
+            case "credit_card_type":
+                return self.get_credit_card_type()
+            case "credit_card_number":
+                return self.get_credit_card_number()
+            case _:
+                raise ValueError(input_type + " is not a valid argument value")
 
     def get_email(self):
         email = input("Email: ")

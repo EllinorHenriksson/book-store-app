@@ -1,8 +1,10 @@
 from controller.MainMenu import MainMenu
 from view.MainView import MainView
 from view.UserInfoValidator import UserInfoValidator
+from model.MemberModel import MemberModel
 
 validator = UserInfoValidator()
-mainView = MainView(validator)
-mainMenu = MainMenu(mainView)
-mainMenu.run()
+main_view = MainView(validator)
+member_model = MemberModel()
+main_menu = MainMenu(main_view, member_model)
+main_menu.run()
