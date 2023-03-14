@@ -28,24 +28,10 @@ class MainView:
         """Prints error message."""
         print(message)
 
-    def get_action(self):
-        """
-        Gets user action.
-
-        Returns
-        -------
-        MainAction
-        """
-        value = input("Menu choice: ")
-
-        for action in MainActions:
-            if value == action.value:
-                return MainActions(value)
-
-        raise ValueError(value + " is not a vaild menu choice")
-
     def get_input(self, input_type):
         match input_type:
+            case "main_action":
+                return self.get_main_action()
             case "email":
                 return self.get_email()
             case "password":
@@ -70,6 +56,22 @@ class MainView:
                 return self.get_credit_card_number()
             case _:
                 raise ValueError(input_type + " is not a valid argument value")
+            
+    def get_main_action(self):
+        """
+        Gets main action.
+
+        Returns
+        -------
+        MainAction
+        """
+        value = input("Menu choice: ")
+
+        for action in MainActions:
+            if value == action.value:
+                return MainActions(value)
+
+        raise ValueError(value + " is not a vaild menu choice")
 
     def get_email(self):
         email = input("Email: ")

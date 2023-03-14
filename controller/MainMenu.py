@@ -14,7 +14,7 @@ class MainMenu:
         while run_menu:
             self.view.print_menu()
             try:
-                choice = self.get_action()
+                choice = self.get_input("main_action")
                 if choice == MainActions.REGISTER:
                     self.register()
                 elif choice == MainActions.LOGIN:
@@ -24,7 +24,7 @@ class MainMenu:
             except ValueError as error:
                 self.view.print_error_message(str(error))
 
-    def get_action(self):
+    def get_menu_action(self):
         action = None
         while not action:
             try:
