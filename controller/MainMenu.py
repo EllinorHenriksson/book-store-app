@@ -70,7 +70,18 @@ class MainMenu:
                 self.view.print_error_message(str(error))
 
     def login(self):
-        print("Login")
+        self.view.print_login_header()
+        credentials = {
+            "email": self.get_input("email"),
+            "password": self.get_input("password")
+        }
+
+        try:
+            member = self.member_model.login(credentials)
+            print(member.email)
+            self.view.print_login_success()
+        except (DBError, ValueError) as error:
+            self.view.print_error_message(str(error))
 
     def quit_app(self):
         print("Quit program")

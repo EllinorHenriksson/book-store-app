@@ -53,3 +53,27 @@ class MemberModel:
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+
+    def login(self, credentials):
+        try:
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor(named_tuple = True)
+            query = "SELECT * FROM members WHERE email = %s"
+            cursor.execute(query, (credentials["email"],))
+            members = cursor.fetchall()
+            if len(members) == 1:
+                member = members[0]
+                if bcrypt.checkpw(credentials["password"].encode(), member.password.encode()):
+                    return member
+            raise ValueError("Invalid login credentials")
+        except Error as error:
+            raise DBError("Database error, failed to check user credentials") from error
+        finally:
+            if connection.is_connected():
+                cursor.close()
+                connection.close()
