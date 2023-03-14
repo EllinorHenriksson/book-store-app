@@ -41,9 +41,9 @@ class MemberMenu:
         subjects = self.book_model.get_subjects()
         self.view.print_subjects(subjects)
         subject = self.get_subject(subjects)
-        books = self.book_model.get_books(subject)
-        """
+        books = self.book_model.get_books(subject, 0)
         self.view.print_books(books)
+        """
         book_option = self.get_book_option()
         
         if book_option == BookActions.ISBN:

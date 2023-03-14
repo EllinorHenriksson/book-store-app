@@ -30,3 +30,39 @@ class BookModel:
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+
+    def get_books(self, subject, offset):
+        try:
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor(dictionary=True)
+            query = "SELECT * FROM books WHERE subject = %s LIMIT %s, 2;"
+            cursor.execute(query, (subject, offset))
+            books = cursor.fetchall()
+            return self.make_books_pretty(books)
+        except Error as error:
+            raise DBError("Database error, failed to fetch books") from error
+        finally:
+            if connection.is_connected():
+                cursor.close()
+                connection.close()
+
+    def make_books_pretty(self, books):
+        books_pretty = []
+        for book in books:
+            books_pretty.append(self.make_book_pretty(book))
+
+    def make_book_pretty(self, book):
+        book_pretty = {}
+        for key in book.keys():
+            key_pretty = None
+            if key.upper() == "ISBN":
+                key_pretty = key.upper()
+            else:
+                key_pretty = key[0].upper() + key[1:].lower()
+            book_pretty[key_pretty] = book[key]
+        return book_pretty

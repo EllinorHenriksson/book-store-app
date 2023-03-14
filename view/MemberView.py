@@ -48,3 +48,10 @@ class MemberView:
                 return subjects[key]
 
         raise ValueError(input_value + " is not a valid subject choice")
+    
+    def print_books(self, books):
+        for book in books:
+            print()
+            for key in book.keys():
+                print(key + ": " + book[key])
+                # OBS! Kolla att allt ovan funkar!
