@@ -62,13 +62,13 @@ class MemberModel:
                 user=os.environ["USER"],
                 password=os.environ["PASSWORD"]
             )
-            cursor = connection.cursor(named_tuple = True)
+            cursor = connection.cursor(dictionary=True)
             query = "SELECT * FROM members WHERE email = %s"
             cursor.execute(query, (credentials["email"],))
             members = cursor.fetchall()
             if len(members) == 1:
                 member = members[0]
-                if bcrypt.checkpw(credentials["password"].encode(), member.password.encode()):
+                if bcrypt.checkpw(credentials["password"].encode(), member["password"].encode()):
                     return member
             raise ValueError("Invalid login credentials")
         except Error as error:

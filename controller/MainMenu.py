@@ -69,11 +69,11 @@ class MainMenu:
                 self.view.print_error_message(str(error))
 
     def get_input(self, input_type):
-        input = None
-        while not input:
+        input_value = None
+        while not input_value:
             try:
-                input = self.view.get_input(input_type)
-                return input
+                input_value = self.view.get_input(input_type)
+                return input_value
             except (ValueError) as error:
                 self.view.print_error_message(str(error))
 

@@ -26,3 +26,23 @@ class MemberView:
                 return MemberActions(value)
 
         raise ValueError(value + " is not a vaild menu choice")
+    
+    def get_input(self, input_type):
+        match input_type:
+            case "isbn":
+                return self.get_ISBN()
+            case _:
+                raise ValueError(input_type + " is not a valid argument value")
+            
+    def choose_subject(self, subjects):
+        for key in subjects.keys():
+            print(key + " : " + subjects[key])
+        subject = input("Select subject: ")
+        # OBS! Fortsätt här! Ovan ger Error
+        # Check that subject is correct
+        # Translate number into name
+        # Return subject
+        """
+        self.validator.check_subject(subject)
+        return subject
+        """

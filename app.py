@@ -6,11 +6,13 @@ from view.UserInfoValidator import UserInfoValidator
 from model.MemberModel import MemberModel
 from controller.MemberMenu import MemberMenu
 from view.MemberView import MemberView
+from model.BookModel import BookModel
 
 load_dotenv()
 
 member_view = MemberView()
-member_menu = MemberMenu(member_view)
+book_model = BookModel()
+member_menu = MemberMenu(member_view, book_model)
 validator = UserInfoValidator()
 main_view = MainView(validator)
 member_model = MemberModel()
