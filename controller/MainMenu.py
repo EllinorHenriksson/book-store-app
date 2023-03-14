@@ -1,29 +1,37 @@
-from view.actions.MainMenuActions import MainMenuActions
+from view.actions.MainActions import MainActions
 from model.errors.DBError import DBError
 
 class MainMenu:
-    def __init__(self, view, member_model):
+    def __init__(self, view, member_model, member_menu):
         self.view = view
         self.member_model = member_model
+        self.member_menu = member_menu
 
     def run(self):
         """Runs the main menu"""
         self.view.print_welcome_message()
-        run_app = True
-        while run_app:
+        run_menu = True
+        while run_menu:
             self.view.print_menu()
             try:
-                choice = self.view.get_action()
-                if choice == MainMenuActions.REGISTER:
+                choice = self.get_action()
+                if choice == MainActions.REGISTER:
                     self.register()
-                elif choice == MainMenuActions.LOGIN:
+                elif choice == MainActions.LOGIN:
                     self.login()
                 else:
-                    run_app = False
+                    run_menu = False
             except ValueError as error:
                 self.view.print_error_message(str(error))
 
-        self.quit_app()
+    def get_action(self):
+        action = None
+        while not action:
+            try:
+                action = self.view.get_action()
+                return action
+            except ValueError as error:
+                self.view.print_error_message(str(error))
 
     def register(self):
         self.view.print_register_header()
@@ -78,10 +86,7 @@ class MainMenu:
 
         try:
             member = self.member_model.login(credentials)
-            print(member.email)
             self.view.print_login_success()
+            self.member_menu.run(member)
         except (DBError, ValueError) as error:
             self.view.print_error_message(str(error))
-
-    def quit_app(self):
-        print("Quit program")

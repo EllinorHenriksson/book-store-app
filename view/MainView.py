@@ -1,9 +1,8 @@
-from view.actions.MainMenuActions import MainMenuActions
+from view.actions.MainActions import MainActions
 
 class MainView:
     def __init__(self, validator):
         self.validator = validator
-        self.menu = "\n***** Main Menu *****\nr : Register\nl : Login\nq : Quit"
 
     def print_welcome_message(self):
         """Prints a welcome message."""
@@ -11,7 +10,7 @@ class MainView:
 
     def print_menu(self):
         """Prints the menu."""
-        print(self.menu)
+        print("\n***** Main Menu *****\nr : Register\nl : Login\nq : Quit")
 
     def print_register_header(self):
         print("\n----- Register -----")
@@ -35,13 +34,13 @@ class MainView:
 
         Returns
         -------
-        MainMenuAction
+        MainAction
         """
         value = input("Menu choice: ")
 
-        for action in MainMenuActions:
+        for action in MainActions:
             if value == action.value:
-                return MainMenuActions(value)
+                return MainActions(value)
 
         raise ValueError(value + " is not a vaild menu choice")
 

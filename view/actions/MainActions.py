@@ -1,6 +1,6 @@
 from enum import Enum
 
-class MainMenuActions(Enum):
+class MainActions(Enum):
     REGISTER = "r"
     LOGIN = "l"
     QUIT = "q"
