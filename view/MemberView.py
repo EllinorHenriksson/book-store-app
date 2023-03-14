@@ -4,6 +4,9 @@ class MemberView:
     def print_menu(self):
         print("\n***** Member Menu *****\nb : Browse by subject\ns : Search by author/title\nc : Checkout\nl : Logout")
 
+    def print_browse_header(self):
+        print("\n----- Browse by subject -----")
+
     def print_logout_success(self):
         print("Successfully logged out!")
 
@@ -33,16 +36,15 @@ class MemberView:
                 return self.get_ISBN()
             case _:
                 raise ValueError(input_type + " is not a valid argument value")
-            
-    def choose_subject(self, subjects):
+
+    def print_subjects(self, subjects):
         for key in subjects.keys():
             print(key + " : " + subjects[key])
-        subject = input("Select subject: ")
-        # OBS! Fortsätt här! Ovan ger Error
-        # Check that subject is correct
-        # Translate number into name
-        # Return subject
-        """
-        self.validator.check_subject(subject)
-        return subject
-        """
+
+    def get_subject(self, subjects):
+        input_value = input("Subject choice: ")
+        for key in subjects.keys():
+            if input_value == key:
+                return subjects[key]
+
+        raise ValueError(input_value + " is not a valid subject choice")

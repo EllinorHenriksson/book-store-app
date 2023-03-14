@@ -37,10 +37,12 @@ class MemberMenu:
                 self.view.print_error_message(str(error))
 
     def browse(self):
+        self.view.print_browse_header()
         subjects = self.book_model.get_subjects()
-        subject = self.choose_subject(subjects)
-        """
+        self.view.print_subjects(subjects)
+        subject = self.get_subject(subjects)
         books = self.book_model.get_books(subject)
+        """
         self.view.print_books(books)
         book_option = self.get_book_option()
         
@@ -52,11 +54,11 @@ class MemberMenu:
             # Go back to member menu
             """
         
-    def choose_subject(self, subjects):
+    def get_subject(self, subjects):
         subject = None
         while not subject:
             try:
-                subject = self.view.choose_subject(subjects)
+                subject = self.view.get_subject(subjects)
                 return subject
             except (ValueError) as error:
                 self.view.print_error_message(str(error))

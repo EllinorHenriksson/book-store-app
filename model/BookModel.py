@@ -18,8 +18,11 @@ class BookModel:
             cursor.execute(query)
             subjects_tupl = cursor.fetchall()
             subjects_dict = {}
-            for x in range(len(subjects_tupl)):
-                subjects_dict[str(x + 1)] = subjects_tupl[x]
+            count = 1
+            for row in subjects_tupl:
+                subject = row[0]
+                subjects_dict[str(count)] = subject[0].upper() + subject[1:].lower()
+                count = count + 1
             return subjects_dict
         except Error as error:
             raise DBError("Database error, failed to fetch subjects") from error
