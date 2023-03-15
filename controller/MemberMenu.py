@@ -26,6 +26,7 @@ class MemberMenu:
         an Order object
     odetail_model : model.Odetails
         an Odetails object
+    member : {"userid": int, "fname": str, "lname": str, "address": str, "city": str, "state": str, "zip": int, "phone": str}
 
     Methods
     -------

@@ -1,10 +1,30 @@
+"""
+Classes:
+
+    Member
+"""
+
 import os
 import bcrypt
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
 class Member:
+    """
+    Represents a Member.
+
+    Methods
+    -------
+    is_email_unique(self, email)
+        Checks if the current email is unique.
+    create(member)
+        Creates a new member.
+    login(credentials)
+        Tries to log in the user.
+    """
+
     def is_email_unique(self, email):
+        """Checks if the current email is unique."""
         try:
             connection = None
             connection = connect(
@@ -29,6 +49,7 @@ class Member:
                     connection.close()
 
     def create(self, member):
+        """Creates a new member."""
         # Hashes password
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(member["password"].encode(), salt)
@@ -63,6 +84,7 @@ class Member:
                     connection.close()
 
     def login(self, credentials):
+        """Tries to log in the user."""
         try:
             connection = None
             connection = connect(

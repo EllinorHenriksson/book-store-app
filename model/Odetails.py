@@ -1,9 +1,24 @@
+"""
+Classes:
+
+    Odetails
+"""
+
 import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
 class Odetails:
+    """
+    Represents order details.
+
+    Methods
+    -------
+    create(data)
+        Creates new order details.
+    """
     def create(self, data):
+        """Creates new order details."""
         try:
             connection = None
             connection = connect(

@@ -1,9 +1,30 @@
+"""
+Classes:
+
+    Cart
+"""
+
 import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
 class Cart:
+    """
+    Represents a cart.
+
+    Methods
+    -------
+    update_cart(userid, isbn, quantity)
+        Checks if cart with user id and isbn exists; updates it if it does, creates a new cart if it doesn't.
+    get_carts(userid)
+        Gets all carts of the current user.
+    get_total_cost(userid)
+        Gets the total cost of the books that the user has placed in carts.
+    delete(userid, isbn)
+        Deletes the cart of the current user and book.
+    """
     def update_cart(self, userid, isbn, quantity):
+        """Checks if cart with user id and isbn exists; updates it if it does, creates a new cart if it doesn't."""
         try:
             connection = None
             connection = connect(
@@ -34,6 +55,7 @@ class Cart:
                     connection.close()
 
     def get_carts(self, userid):
+        """Gets all carts of the current user."""
         try:
             connection = None
             connection = connect(
@@ -60,6 +82,7 @@ class Cart:
                     connection.close()
 
     def get_total_cost(self, userid):
+        """Gets the total cost of the books that the user has placed in carts."""
         try:
             connection = None
             connection = connect(
@@ -86,6 +109,7 @@ class Cart:
                     connection.close()
 
     def delete(self, userid, isbn):
+        """Deletes the cart of the current user and book."""
         try:
             connection = None
             connection = connect(

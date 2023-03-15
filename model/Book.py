@@ -1,9 +1,47 @@
+"""
+Classes:
+
+    Book
+"""
+
 import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
 class Book:
+    """
+    Represents a main menu.
+
+    Methods
+    -------
+    get_subjects()
+        Gets all subjects.
+    get_count_by_subject(subject)
+        Gets the count of the books of the current subject.
+    browse_by_subject(subject, offset)
+        Gets the books of the current subject.
+    get_count_by_author(search_term)
+        Gets the count of the books of authors containing the current search term.
+    search_by_author(search_term, offset)
+        Gets the books of authors containing the current search term.
+    get_count_by_title(search_term)
+        Gets the count of the books with titles containing the current search term.
+    search_by_title(self, search_term, offset)
+        Gets the books with titles containing the current search term.
+    conv_one_value_tupl_to_dict(tuples)
+        Converts one-value tuples to one dictionary.
+    make_pretty(text)
+        Makes text pretty by making the first character uppercase and the rest of the characters lowercase.
+    make_books_pretty(books)
+        Makes the representation of the books pretty.
+    make_book_pretty(book)
+        Makes the representation of a book pretty.
+    is_book_in_db(isbn)
+        Checks if the current book is in the database.
+    """
+
     def get_subjects(self):
+        """Gets all subjects."""
         try:
             connection = None
             connection = connect(
@@ -28,6 +66,7 @@ class Book:
                     connection.close()
 
     def get_count_by_subject(self, subject):
+        """Gets the count of the books of the current subject."""
         try:
             connection = None
             connection = connect(
@@ -49,6 +88,7 @@ class Book:
                     connection.close()
 
     def browse_by_subject(self, subject, offset):
+        """Gets the books of the current subject."""
         try:
             connection = None
             connection = connect(
@@ -71,6 +111,7 @@ class Book:
                     connection.close()
 
     def get_count_by_author(self, search_term):
+        """Gets the count of the books of authors containing the current search term."""
         try:
             connection = None
             connection = connect(
@@ -92,6 +133,7 @@ class Book:
                     connection.close()
 
     def search_by_author(self, search_term, offset):
+        """Gets the books of authors containing the current search term."""
         try:
             connection = None
             connection = connect(
@@ -114,6 +156,7 @@ class Book:
                     connection.close()
 
     def get_count_by_title(self, search_term):
+        """Gets the count of the books with titles containing the current search term."""
         try:
             connection = None
             connection = connect(
@@ -135,6 +178,7 @@ class Book:
                     connection.close()
 
     def search_by_title(self, search_term, offset):
+        """Gets the books with titles containing the current search term."""
         try:
             connection = None
             connection = connect(
@@ -157,6 +201,7 @@ class Book:
                     connection.close()
 
     def conv_one_value_tupl_to_dict(self, tuples):
+        """Converts one-value tuples to one dictionary."""
         dict = {}
         count = 1
         for tupl in tuples:
@@ -166,9 +211,11 @@ class Book:
         return dict
 
     def make_pretty(self, text):
+        """Makes text pretty by making the first character uppercase and the rest of the characters lowercase."""
         return text[0].upper() + text[1:].lower()
 
     def make_books_pretty(self, books):
+        """Makes the representation of the books pretty."""
         books_pretty = []
         for book in books:
             books_pretty.append(self.make_book_pretty(book))
@@ -176,6 +223,7 @@ class Book:
         return books_pretty
 
     def make_book_pretty(self, book):
+        """Makes the representation of a book pretty."""
         book_pretty = {}
         for key in book.keys():
             key_pretty = None
@@ -190,6 +238,7 @@ class Book:
         return book_pretty
 
     def is_book_in_db(self, isbn):
+        """Checks if the current book is in the database."""
         try:
             connection = None
             connection = connect(

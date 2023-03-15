@@ -1,10 +1,25 @@
+"""
+Classes:
+
+    Order
+"""
+
 import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 from datetime import date
 
 class Order:
+    """
+    Represents an order.
+
+    Methods
+    -------
+    create(userid)
+        Creates new order.
+    """
     def create(self, userid):
+        """Creates new order."""
         try:
             connection = None
             connection = connect(
