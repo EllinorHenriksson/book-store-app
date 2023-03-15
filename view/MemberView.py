@@ -9,6 +9,9 @@ class MemberView:
     def print_browse_header(self):
         print("\n----- Browse by subject -----")
 
+    def print_cart_success(self):
+        print("Successfully added to cart!")
+
     def print_logout_success(self):
         print("Successfully logged out!")
 
@@ -24,8 +27,10 @@ class MemberView:
                 return self.get_book_action()
             case "subject":
                 return self.get_subject(subjects)
-            case "book":
-                return self.get_book()
+            case "isbn":
+                return self.get_isbn()
+            case "quantity":
+                return self.get_quantity()
             case _:
                 raise ValueError(input_type + " is not a valid argument value")
 
@@ -80,14 +85,23 @@ class MemberView:
                 print(key + ": " + str(book[key]))
         print("\na : Add book to cart\nl : Load more books\nr : Return")
 
-    def get_book(self):
-        book = input("ISBN: ")
-        if len(book) != 10:
-            raise ValueError("The ISBN must be 10 characters long")
-
-        regex = "^\d+$"
-        match = re.fullmatch(regex, book)
+    def get_isbn(self):
+        isbn = input("ISBN: ")
+        regex = "^\d{10}$"
+        match = re.fullmatch(regex, isbn)
         if not match:
-            raise ValueError("The ISBN may only consist of numbers")
+            raise ValueError("The ISBN must consist of 10 numbers")
 
-        return book
+        return isbn
+
+    def get_quantity(self):
+        quantity = None
+        try:
+            quantity = int(input("Quantity: "))
+        except ValueError as error:
+            raise ValueError("Quantity must be a number") from error
+
+        if quantity <= 0:
+            raise ValueError("Quantity must be above 0")
+
+        return quantity

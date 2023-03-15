@@ -1,10 +1,13 @@
 from view.actions.MemberActions import MemberActions
 from view.actions.BookActions import BookActions
+from model.errors.DBError import DBError
 
 class MemberMenu:
-    def __init__(self, view, book_model):
+    def __init__(self, view, book_model, cart_model):
         self.view = view
         self.book_model = book_model
+        self.cart_model = cart_model
+
         self.member = None
 
     def run(self, member):
@@ -23,7 +26,7 @@ class MemberMenu:
                     self.checkout()
                 else:
                     run_menu = False
-            except ValueError as error:
+            except (ValueError, DBError) as error:
                 self.view.print_error_message(str(error))
 
         self.logout()
@@ -54,11 +57,16 @@ class MemberMenu:
             self.print_books(subject, offset + 2)
 
     def add_book_to_cart(self):
-        book = self.get_input("book")
-        # OBS! Fortsätt här!
-        # Check if isbn exsists in DB
-        # Let user enter quantity
-        # Update cart if already existing, or create new cart
+        isbn = self.get_input("isbn")
+        if self.book_model.is_book_in_db(isbn):
+            pass
+        else:
+            self.view.print_error_message("There is no book with the provided ISBN")
+            self.add_book_to_cart()
+
+        quantity = self.get_input("quantity")
+        self.cart_model.update_cart(self.member["userid"], isbn, quantity)
+        self.view.print_cart_success()
 
     def search(self):
         print("Search")

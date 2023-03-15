@@ -6,6 +6,7 @@ from model.errors.DBError import DBError
 class MemberModel:
     def is_email_unique(self, email):
         try:
+            connection = None
             connection = connect(
                 host="localhost",
                 database="book_store",
@@ -13,17 +14,19 @@ class MemberModel:
                 password=os.environ["PASSWORD"]
             )
             cursor = connection.cursor()
-            query ="SELECT * FROM members WHERE email = %s"
+            query ="SELECT COUNT(*) FROM members WHERE email = %s"
             cursor.execute(query, (email,))
-            if len(cursor.fetchall()) == 0:
+            count = cursor.fetchall()[0][0]
+            if count == 0:
                 return True
             return False
         except Error as error:
             raise DBError("Database error, failed to check email") from error
         finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
 
     def create_member(self, member):
         # Hashes password
@@ -32,6 +35,7 @@ class MemberModel:
 
         # Creates member
         try:
+            connection = None
             connection = connect(
                 host="localhost",
                 database="book_store",
@@ -50,12 +54,14 @@ class MemberModel:
         except Error as error:
             raise DBError("Database error, failed to create an account") from error
         finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
 
     def login(self, credentials):
         try:
+            connection = None
             connection = connect(
                 host="localhost",
                 database="book_store",
@@ -74,6 +80,7 @@ class MemberModel:
         except Error as error:
             raise DBError("Database error, failed to check user credentials") from error
         finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()

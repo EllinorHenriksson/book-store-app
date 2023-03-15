@@ -7,12 +7,14 @@ from model.MemberModel import MemberModel
 from controller.MemberMenu import MemberMenu
 from view.MemberView import MemberView
 from model.BookModel import BookModel
+from model.CartModel import CartModel
 
 load_dotenv()
 
 member_view = MemberView()
 book_model = BookModel()
-member_menu = MemberMenu(member_view, book_model)
+cart_model = CartModel()
+member_menu = MemberMenu(member_view, book_model, cart_model)
 validator = UserInfoValidator()
 main_view = MainView(validator)
 member_model = MemberModel()

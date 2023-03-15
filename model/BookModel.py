@@ -5,6 +5,7 @@ from model.errors.DBError import DBError
 class BookModel:
     def get_subjects(self):
         try:
+            connection = None
             connection = connect(
                 host="localhost",
                 database="book_store",
@@ -21,12 +22,14 @@ class BookModel:
         except Error as error:
             raise DBError("Database error, failed to fetch subjects") from error
         finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
 
     def get_books(self, subject, offset):
         try:
+            connection = None
             connection = connect(
                 host="localhost",
                 database="book_store",
@@ -41,9 +44,10 @@ class BookModel:
         except Error as error:
             raise DBError("Database error, failed to fetch books") from error
         finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
 
     def conv_one_value_tupl_to_dict(self, tuples):
         dict = {}
@@ -77,3 +81,27 @@ class BookModel:
                 value_pretty = self.make_pretty(book[key])
             book_pretty[key_pretty] = value_pretty
         return book_pretty
+
+    def is_book_in_db(self, isbn):
+        try:
+            connection = None
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor()
+            query ="SELECT COUNT(*) FROM books WHERE isbn = %s"
+            cursor.execute(query, (isbn,))
+            count = cursor.fetchall()[0][0]
+            if count == 1:
+                return True
+            return False
+        except Error as error:
+            raise DBError("Database error, failed to check ISBN") from error
+        finally:
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()

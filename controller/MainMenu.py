@@ -21,7 +21,7 @@ class MainMenu:
                     self.login()
                 else:
                     run_menu = False
-            except ValueError as error:
+            except (ValueError, DBError) as error:
                 self.view.print_error_message(str(error))
 
     def get_menu_action(self):
@@ -37,7 +37,7 @@ class MainMenu:
         self.view.print_register_header()
 
         member = {
-            "email": self.get_email(),
+            "email": self.get_unique_email(),
             "password": self.get_input("password"),
             "fname": self.get_input("fname"),
             "lname": self.get_input("lname"),
@@ -48,13 +48,10 @@ class MainMenu:
             "phone": self.get_input("phone")
         }
 
-        try:
-            self.member_model.create_member(member)
-            self.view.print_registration_success()
-        except DBError as error:
-            self.view.print_error_message(str(error))
+        self.member_model.create_member(member)
+        self.view.print_registration_success()
 
-    def get_email(self):
+    def get_unique_email(self):
         is_email_unique = False
         while not is_email_unique:
             try:
@@ -65,7 +62,7 @@ class MainMenu:
                     self.view.print_error_message("Email is already registered")
                 else:
                     return email
-            except (ValueError, DBError) as error:
+            except (ValueError) as error:
                 self.view.print_error_message(str(error))
 
     def get_input(self, input_type):
@@ -88,5 +85,5 @@ class MainMenu:
             member = self.member_model.login(credentials)
             self.view.print_login_success()
             self.member_menu.run(member)
-        except (DBError, ValueError) as error:
+        except (ValueError) as error:
             self.view.print_error_message(str(error))
