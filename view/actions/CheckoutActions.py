@@ -1,3 +1,9 @@
+"""
+Enums:
+
+    CheckoutActions
+"""
+
 from enum import Enum
 
 class CheckoutActions(Enum):

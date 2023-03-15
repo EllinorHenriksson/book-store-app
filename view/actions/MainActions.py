@@ -1,3 +1,9 @@
+"""
+Enums:
+
+    MainActions
+"""
+
 from enum import Enum
 
 class MainActions(Enum):

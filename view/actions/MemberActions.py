@@ -1,3 +1,9 @@
+"""
+Enums:
+
+    MemberActions
+"""
+
 from enum import Enum
 
 class MemberActions(Enum):

@@ -1,3 +1,9 @@
+"""
+Enums:
+
+    BookActions
+"""
+
 from enum import Enum
 
 class BookActions(Enum):

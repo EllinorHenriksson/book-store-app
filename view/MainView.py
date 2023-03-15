@@ -118,13 +118,3 @@ class MainView:
         phone = input("Phone: ")
         self.validator.check_phone(phone)
         return phone
-
-    def get_credit_card_type(self):
-        credit_card_type = input("Credit card type: ")
-        self.validator.check_credit_card_type(credit_card_type)
-        return credit_card_type
-
-    def get_credit_card_number(self):
-        credit_card_number = input("Credit card number: ")
-        self.validator.check_credit_card_number(credit_card_number)
-        return credit_card_number
