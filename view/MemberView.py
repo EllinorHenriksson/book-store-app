@@ -1,6 +1,9 @@
+from tabulate import tabulate
+
 from view.actions.MemberActions import MemberActions
 from view.actions.BookActions import BookActions
 from view.actions.SearchActions import SearchActions
+from view.actions.CheckoutActions import CheckoutActions
 
 class MemberView:
     def __init__(self, validator):
@@ -19,7 +22,7 @@ class MemberView:
         print("a : Author search\nt : Title search\nr : Return")
 
     def print_checkout_header(self):
-        print("----- Checkout -----")
+        print("\n----- Checkout -----")
 
     def print_cart_success(self):
         print("Successfully added to cart!")
@@ -47,6 +50,8 @@ class MemberView:
                 return self.get_search_action()
             case "search_term":
                 return self.get_search_term()
+            case "checkout_action":
+                return self.get_checkout_action()
             case _:
                 raise ValueError(input_type + " is not a valid argument value")
 
@@ -141,3 +146,17 @@ class MemberView:
         search_term = input("Search term: ")
         self.validator.check_search_term(search_term)
         return search_term
+
+    def print_cart_content(self, cart_content, total_cost):
+        print("Cart content: ")
+        print (tabulate(cart_content, headers="keys"))
+        print("Total cost: " + str(round(total_cost, 2)) + " $")
+
+    def get_checkout_action(self):
+        value = input("Proceed with checkout (y/n): ")
+
+        for action in CheckoutActions:
+            if value == action.value:
+                return CheckoutActions(value)
+
+        raise ValueError(value + " is not a vaild checkout choice")

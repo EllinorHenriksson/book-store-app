@@ -2,6 +2,7 @@ from view.actions.MemberActions import MemberActions
 from view.actions.BookActions import BookActions
 from model.errors.DBError import DBError
 from view.actions.SearchActions import SearchActions
+from view.actions.CheckoutActions import CheckoutActions
 
 class MemberMenu:
     def __init__(self, view, book_model, cart_model):
@@ -115,7 +116,19 @@ class MemberMenu:
             self.show_books_by_title(search_term, offset + 3)
 
     def checkout(self):
-        print("Checkout")
+        self.view.print_checkout_header()
+        cart_content = self.cart_model.get_cart_content(self.member["userid"])
+        total_cost = self.cart_model.get_total_cost(self.member["userid"])
+        self.view.print_cart_content(cart_content, total_cost)
+        action = self.get_input("checkout_action")
+        if action == CheckoutActions.YES:
+            self.perform_checkout()
+
+    def perform_checkout(self):
+        # Generate estimated delivery date (one week ahead)
+        # Save order with the date
+        # Save order details
+        # Print invoice
 
     def logout(self):
         self.member = None
