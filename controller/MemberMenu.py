@@ -5,10 +5,12 @@ from view.actions.SearchActions import SearchActions
 from view.actions.CheckoutActions import CheckoutActions
 
 class MemberMenu:
-    def __init__(self, view, book_model, cart_model):
+    def __init__(self, view, book_model, cart_model, order_model, odetails_model):
         self.view = view
         self.book_model = book_model
         self.cart_model = cart_model
+        self.order_model = order_model
+        self.odetails_model = odetails_model
 
         self.member = None
 
@@ -117,18 +119,28 @@ class MemberMenu:
 
     def checkout(self):
         self.view.print_checkout_header()
-        cart_content = self.cart_model.get_cart_content(self.member["userid"])
-        total_cost = self.cart_model.get_total_cost(self.member["userid"])
-        self.view.print_cart_content(cart_content, total_cost)
-        action = self.get_input("checkout_action")
-        if action == CheckoutActions.YES:
-            self.perform_checkout()
+        carts = self.cart_model.get_carts(self.member["userid"])
+        if len(carts) > 0:
+            total_cost = self.cart_model.get_total_cost(self.member["userid"])
+            self.view.print_carts(carts, total_cost)
+            action = self.get_input("checkout_action")
+            if action == CheckoutActions.YES:
+                self.perform_checkout(carts, total_cost)
+        else:
+            self.view.print_error_message("There is no cart content")
 
-    def perform_checkout(self):
-        # Generate estimated delivery date (one week ahead)
-        # Save order with the date
-        # Save order details
-        # Print invoice
+    def perform_checkout(self, carts, total_cost):
+        order_number = self.order_model.create(self.member["userid"])
+        for cart in carts:
+            self.odetails_model.create({
+                "order_number": order_number,
+                "isbn": cart["ISBN"],
+                "quantity": cart["Quantity"],
+                "total_price": cart["Total"]
+            })
+            self.cart_model.delete(self.member["userid"], cart["ISBN"])
+
+        self.view.print_invoice(self.member, carts, total_cost)
 
     def logout(self):
         self.member = None

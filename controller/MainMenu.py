@@ -48,7 +48,7 @@ class MainMenu:
             "phone": self.get_input("phone")
         }
 
-        self.member_model.create_member(member)
+        self.member_model.create(member)
         self.view.print_registration_success()
 
     def get_unique_email(self):

@@ -28,7 +28,7 @@ class MemberModel:
                     cursor.close()
                     connection.close()
 
-    def create_member(self, member):
+    def create(self, member):
         # Hashes password
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(member["password"].encode(), salt)
@@ -43,9 +43,10 @@ class MemberModel:
                 password=os.environ["PASSWORD"]
             )
             cursor = connection.cursor()
-            query = ("INSERT INTO members "
-                "(email, password, fname, lname, address, zip, city, state, phone) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            query = """
+                INSERT INTO members (email, password, fname, lname, address, zip, city, state, phone)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
             data = (member["email"], hashed, member["fname"], member["lname"],
                     member["address"], member["zip_code"], member["city"], member["state"],
                     member["phone"])

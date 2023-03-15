@@ -33,7 +33,7 @@ class CartModel:
                     cursor.close()
                     connection.close()
 
-    def get_cart_content(self, userid):
+    def get_carts(self, userid):
         try:
             connection = None
             connection = connect(
@@ -52,7 +52,7 @@ class CartModel:
             cursor.execute(query, (userid,))
             return cursor.fetchall()
         except Error as error:
-            raise DBError("Database error, failed to fetch cart content") from error
+            raise DBError("Database error, failed to fetch carts") from error
         finally:
             if connection:
                 if connection.is_connected():
@@ -85,3 +85,25 @@ class CartModel:
                     cursor.close()
                     connection.close()
 
+    def delete(self, userid, isbn):
+        try:
+            connection = None
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor()
+            query ="DELETE FROM cart WHERE userid = %s AND isbn = %s"
+            cursor.execute(query, (userid, isbn))
+            connection.commit()
+        except Error as error:
+            if connection:
+                connection.rollback()
+            raise DBError("Database error, failed to delete cart") from error
+        finally:
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()

@@ -1,4 +1,5 @@
 from tabulate import tabulate
+from datetime import date, timedelta
 
 from view.actions.MemberActions import MemberActions
 from view.actions.BookActions import BookActions
@@ -147,16 +148,25 @@ class MemberView:
         self.validator.check_search_term(search_term)
         return search_term
 
-    def print_cart_content(self, cart_content, total_cost):
-        print("Cart content: ")
-        print (tabulate(cart_content, headers="keys"))
+    def print_carts(self, carts, total_cost):
+        print("\nCart content: ")
+        print (tabulate(carts, headers="keys"))
         print("Total cost: " + str(round(total_cost, 2)) + " $")
 
     def get_checkout_action(self):
-        value = input("Proceed with checkout (y/n): ")
+        value = input("\nProceed with checkout (y/n): ")
 
         for action in CheckoutActions:
             if value == action.value:
                 return CheckoutActions(value)
 
         raise ValueError(value + " is not a vaild checkout choice")
+    
+    def print_invoice(self, member, carts, total_cost):
+        print("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ Invoice ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤")
+        print("\nShipping/billing address:\n" + member["fname"] + " " + member["lname"] +
+                "\n" + member["address"] + "\n" + member["city"] + "\n" + member["state"] + " " + str(member["zip"]))
+        self.print_carts(carts, total_cost)
+        print("\nExpected delivery date: " + str(date.today() + timedelta(days=7)))
+        print("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤")
+        input("\nPress enter to exit")
