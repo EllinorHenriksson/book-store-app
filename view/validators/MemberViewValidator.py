@@ -1,10 +1,10 @@
-import re
-
 """
 Classes:
 
     MemberViewValidator
 """
+
+import re
 
 class MemberViewValidator:
     """
