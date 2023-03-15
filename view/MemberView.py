@@ -1,3 +1,10 @@
+"""
+Classes:
+
+    MemberView
+"""
+
+
 from tabulate import tabulate
 from datetime import date, timedelta
 
@@ -7,28 +14,92 @@ from view.actions.SearchActions import SearchActions
 from view.actions.CheckoutActions import CheckoutActions
 
 class MemberView:
+    """
+    Represents a member view.
+
+    Attributes
+    -------
+    validator : view.validators.MemberViewValidator
+        a MemberViewValidator object
+
+    Methods
+    -------
+    __init__(validator)
+        Initializing constructor.
+    print_menu()
+        Prints the menu.
+    print_browse_header()
+        Prints the browse header.
+    print_search_header()
+        Prints the search header.
+    print_search_options()
+        Prints the search options.
+    print_checkout_header()
+        Prints the checkout header.
+    print_cart_success(self)
+        Prints cart success.
+    print_logout_success()
+        Prints logout success
+    print_error_message(message)
+        Prints error message.
+    get_input(input_type, subjects)
+        Gets user input of the provided type.
+    get_member_action()
+        Gets member action.
+    get_book_action()
+        Gets book action.
+    print_subjects(subjects)
+        Prints the available book subjects.
+    get_subject(subjects)
+        Gets a subject from the user.
+    print_book_count(count)
+        Prints book count.
+    print_books(books)
+        Prints books.
+    get_isbn()
+        Gets an ISBN from the user.
+    get_quantity()
+        Gets book quantity from the user.
+    get_search_action()
+        Gets search action from the user.
+    get_search_term()
+        Gets a search term from the user.
+    print_carts(carts, total_cost)
+        Prints the user's carts.
+    get_checkout_action()
+        Gets checkout action from the user.
+    print_invoice(member, carts, total_cost)
+        Prints the invoice of the user.
+    """
     def __init__(self, validator):
         self.validator = validator
 
     def print_menu(self):
+        """Prints the menu."""
         print("\n***** Member Menu *****\nb : Browse by subject\ns : Search by author/title\nc : Checkout\nl : Logout")
 
     def print_browse_header(self):
+        """Prints the browse header."""
         print("\n----- Browse by subject -----")
 
     def print_search_header(self):
+        """Prints the search header."""
         print("\n----- Search by author/title -----")
 
     def print_search_options(self):
+        """Prints the search options."""
         print("a : Author search\nt : Title search\nr : Return")
 
     def print_checkout_header(self):
+        """Prints the checkout header."""
         print("\n----- Checkout -----")
 
     def print_cart_success(self):
+        """Prints cart success."""
         print("Successfully added to cart!")
 
     def print_logout_success(self):
+        """Prints logout success"""
         print("Successfully logged out!")
 
     def print_error_message(self, message):
@@ -36,6 +107,7 @@ class MemberView:
         print(message)
 
     def get_input(self, input_type, subjects):
+        """Gets user input of the provided type."""
         match input_type:
             case "member_action":
                 return self.get_member_action()
@@ -57,13 +129,7 @@ class MemberView:
                 raise ValueError(input_type + " is not a valid argument value")
 
     def get_member_action(self):
-        """
-        Gets member action.
-
-        Returns
-        -------
-        MemberAction
-        """
+        """Gets member action."""
         value = input("Menu choice: ")
 
         for action in MemberActions:
@@ -73,13 +139,7 @@ class MemberView:
         raise ValueError(value + " is not a vaild menu choice")
     
     def get_book_action(self):
-        """
-        Gets book action.
-
-        Returns
-        -------
-        BookAction
-        """
+        """Gets book action."""
         value = input("Book choice: ")
 
         for action in BookActions:
@@ -89,10 +149,12 @@ class MemberView:
         raise ValueError(value + " is not a vaild book choice")
     
     def print_subjects(self, subjects):
+        """Prints the available book subjects."""
         for key in subjects.keys():
             print(key + " : " + subjects[key])
 
     def get_subject(self, subjects):
+        """Gets a subject from the user."""
         input_value = input("Subject choice: ")
         for key in subjects.keys():
             if input_value == key:
@@ -101,9 +163,11 @@ class MemberView:
         raise ValueError(input_value + " is not a valid subject choice")
     
     def print_book_count(self, count):
+        """Prints book count."""
         print("\n" + str(count) + " books were found")
     
     def print_books(self, books):
+        """Prints books."""
         if len(books) == 0:
             print("\nThere are no more books")
         for book in books:
@@ -113,11 +177,13 @@ class MemberView:
         print("\na : Add book to cart\nl : Load more books\nr : Return")
 
     def get_isbn(self):
+        """Gets an ISBN from the user."""
         isbn = input("ISBN: ")
         self.validator.check_isbn(isbn)
         return isbn
 
     def get_quantity(self):
+        """Gets book quantity from the user."""
         quantity = None
         try:
             quantity = int(input("Quantity: "))
@@ -128,13 +194,7 @@ class MemberView:
         return quantity
     
     def get_search_action(self):
-        """
-        Gets search action.
-
-        Returns
-        -------
-        Search
-        """
+        """Gets search action from the user."""
         value = input("Search choice: ")
 
         for action in SearchActions:
@@ -144,16 +204,19 @@ class MemberView:
         raise ValueError(value + " is not a vaild search choice")
 
     def get_search_term(self):
+        """Gets a search term from the user."""
         search_term = input("Search term: ")
         self.validator.check_search_term(search_term)
         return search_term
 
     def print_carts(self, carts, total_cost):
+        """Prints the user's carts."""
         print("\nCart content: ")
         print (tabulate(carts, headers="keys"))
         print("Total cost: " + str(round(total_cost, 2)) + " $")
 
     def get_checkout_action(self):
+        """Gets checkout action from the user."""
         value = input("\nProceed with checkout (y/n): ")
 
         for action in CheckoutActions:
@@ -163,6 +226,7 @@ class MemberView:
         raise ValueError(value + " is not a vaild checkout choice")
     
     def print_invoice(self, member, carts, total_cost):
+        """Prints the invoice of the user."""
         print("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ Invoice ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤")
         print("\nShipping/billing address:\n" + member["fname"] + " " + member["lname"] +
                 "\n" + member["address"] + "\n" + member["city"] + "\n" + member["state"] + " " + str(member["zip"]))
