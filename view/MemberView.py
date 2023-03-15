@@ -1,13 +1,25 @@
 from view.actions.MemberActions import MemberActions
 from view.actions.BookActions import BookActions
-import re
+from view.actions.SearchActions import SearchActions
 
 class MemberView:
+    def __init__(self, validator):
+        self.validator = validator
+
     def print_menu(self):
         print("\n***** Member Menu *****\nb : Browse by subject\ns : Search by author/title\nc : Checkout\nl : Logout")
 
     def print_browse_header(self):
         print("\n----- Browse by subject -----")
+
+    def print_search_header(self):
+        print("\n----- Search by author/title -----")
+
+    def print_search_options(self):
+        print("a : Author search\nt : Title search\nr : Return")
+
+    def print_checkout_header(self):
+        print("----- Checkout -----")
 
     def print_cart_success(self):
         print("Successfully added to cart!")
@@ -31,6 +43,10 @@ class MemberView:
                 return self.get_isbn()
             case "quantity":
                 return self.get_quantity()
+            case "search_action":
+                return self.get_search_action()
+            case "search_term":
+                return self.get_search_term()
             case _:
                 raise ValueError(input_type + " is not a valid argument value")
 
@@ -87,11 +103,7 @@ class MemberView:
 
     def get_isbn(self):
         isbn = input("ISBN: ")
-        regex = "^\d{10}$"
-        match = re.fullmatch(regex, isbn)
-        if not match:
-            raise ValueError("The ISBN must consist of 10 numbers")
-
+        self.validator.check_isbn(isbn)
         return isbn
 
     def get_quantity(self):
@@ -101,7 +113,26 @@ class MemberView:
         except ValueError as error:
             raise ValueError("Quantity must be a number") from error
 
-        if quantity <= 0:
-            raise ValueError("Quantity must be above 0")
-
+        self.validator.check_quantity(quantity)
         return quantity
+    
+    def get_search_action(self):
+        """
+        Gets search action.
+
+        Returns
+        -------
+        Search
+        """
+        value = input("Search choice: ")
+
+        for action in SearchActions:
+            if value == action.value:
+                return SearchActions(value)
+
+        raise ValueError(value + " is not a vaild search choice")
+
+    def get_search_term(self):
+        search_term = input("Search term: ")
+        self.validator.check_search_term(search_term)
+        return search_term

@@ -1,6 +1,6 @@
 import re
 
-class UserInfoValidator:
+class MainViewValidator:
     def check_fname(self, fname):
         if len(fname) == 0 or len(fname) > 20:
             raise ValueError("First name must be <= 20 characters long")

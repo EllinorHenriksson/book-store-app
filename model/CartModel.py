@@ -25,6 +25,8 @@ class CartModel:
                 cursor.execute(query, (quantity, userid, isbn))
                 connection.commit()
         except Error as error:
+            if connection:
+                connection.rollback()
             raise DBError("Database error, failed to update cart") from error
         finally:
             if connection:

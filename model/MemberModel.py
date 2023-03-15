@@ -21,6 +21,8 @@ class MemberModel:
                 return True
             return False
         except Error as error:
+            if connection:
+                connection.rollback()
             raise DBError("Database error, failed to check email") from error
         finally:
             if connection:
@@ -52,6 +54,8 @@ class MemberModel:
             cursor.execute(query, data)
             connection.commit()
         except Error as error:
+            if connection:
+                connection.rollback()
             raise DBError("Database error, failed to create an account") from error
         finally:
             if connection:
@@ -78,6 +82,8 @@ class MemberModel:
                     return member
             raise ValueError("Invalid login credentials")
         except Error as error:
+            if connection:
+                connection.rollback()
             raise DBError("Database error, failed to check user credentials") from error
         finally:
             if connection:
