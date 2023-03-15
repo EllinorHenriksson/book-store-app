@@ -3,7 +3,7 @@ from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 from datetime import date
 
-class OrderModel:
+class Order:
     def create(self, userid):
         try:
             connection = None

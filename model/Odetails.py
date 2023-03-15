@@ -2,7 +2,7 @@ import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
-class OdetailsModel:
+class Odetails:
     def create(self, data):
         try:
             connection = None

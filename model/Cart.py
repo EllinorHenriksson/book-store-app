@@ -2,7 +2,7 @@ import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
-class CartModel:
+class Cart:
     def update_cart(self, userid, isbn, quantity):
         try:
             connection = None

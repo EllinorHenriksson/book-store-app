@@ -3,7 +3,7 @@ import bcrypt
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
-class MemberModel:
+class Member:
     def is_email_unique(self, email):
         try:
             connection = None

@@ -1,14 +1,48 @@
+"""
+Classes:
+
+    MainMenu
+"""
+
 from view.actions.MainActions import MainActions
 from model.errors.DBError import DBError
 
 class MainMenu:
+    """
+    Represents a main menu.
+
+    Attributes
+    ----------
+    view : view.MainView
+        a MainView object
+    member_model : model.Member
+        an Member object
+    member_menu : controller.MemberMenu
+        an MemberMenu object
+
+    Methods
+    -------
+    ___init__(view, member_model, member_menu):
+        Initializing constructor.
+    run()
+        Runs the main menu.
+    register()
+        Lets the user register.
+    get_unique_email()
+        Gets a unique email from the user.
+    get_input(input_type)
+        Gets input from the user of the specified type.
+    login()
+        Lets the user log in.
+    """
+
     def __init__(self, view, member_model, member_menu):
         self.view = view
         self.member_model = member_model
         self.member_menu = member_menu
 
     def run(self):
-        """Runs the main menu"""
+        """Runs the main menu."""
         self.view.print_welcome_message()
         run_menu = True
         while run_menu:
@@ -24,16 +58,8 @@ class MainMenu:
             except (ValueError, DBError) as error:
                 self.view.print_error_message(str(error))
 
-    def get_menu_action(self):
-        action = None
-        while not action:
-            try:
-                action = self.view.get_action()
-                return action
-            except ValueError as error:
-                self.view.print_error_message(str(error))
-
     def register(self):
+        """Lets the user register."""
         self.view.print_register_header()
 
         member = {
@@ -52,6 +78,7 @@ class MainMenu:
         self.view.print_registration_success()
 
     def get_unique_email(self):
+        """Gets a unique email from the user."""
         is_email_unique = False
         while not is_email_unique:
             try:
@@ -66,6 +93,7 @@ class MainMenu:
                 self.view.print_error_message(str(error))
 
     def get_input(self, input_type):
+        """Gets input from the user of the specified type."""
         input_value = None
         while not input_value:
             try:
@@ -75,6 +103,7 @@ class MainMenu:
                 self.view.print_error_message(str(error))
 
     def login(self):
+        """Lets the user log in."""
         self.view.print_login_header()
         credentials = {
             "email": self.get_input("email"),

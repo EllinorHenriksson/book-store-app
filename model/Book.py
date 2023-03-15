@@ -2,7 +2,7 @@ import os
 from mysql.connector import connect, Error
 from model.errors.DBError import DBError
 
-class BookModel:
+class Book:
     def get_subjects(self):
         try:
             connection = None
