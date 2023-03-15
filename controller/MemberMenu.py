@@ -37,7 +37,10 @@ class MemberMenu:
         subjects = self.book_model.get_subjects()
         self.view.print_subjects(subjects)
         subject = self.get_input("subject", subjects)
-        self.show_books_by_subject(subject, 0)
+        book_count = self.book_model.get_count_by_subject(subject)
+        self.view.print_book_count(book_count)
+        if book_count > 0:
+            self.show_books_by_subject(subject, 0)
 
     def get_input(self, input_type, subjects = None):
         input_value = None
@@ -81,7 +84,10 @@ class MemberMenu:
 
     def search_by_author(self):
         search_term = self.get_input("search_term")
-        self.show_books_by_author(search_term, 0)
+        book_count = self.book_model.get_count_by_author(search_term)
+        self.view.print_book_count(book_count)
+        if book_count > 0:
+            self.show_books_by_author(search_term, 0)
 
     def show_books_by_author(self, search_term, offset):
         books = self.book_model.search_by_author(search_term, offset)
@@ -94,7 +100,10 @@ class MemberMenu:
 
     def search_by_title(self):
         search_term = self.get_input("search_term")
-        self.show_books_by_title(search_term, 0)
+        book_count = self.book_model.get_count_by_title(search_term)
+        self.view.print_book_count(book_count)
+        if book_count > 0:
+            self.show_books_by_title(search_term, 0)
 
     def show_books_by_title(self, search_term, offset):
         books = self.book_model.search_by_title(search_term, offset)

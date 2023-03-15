@@ -94,7 +94,12 @@ class MemberView:
 
         raise ValueError(input_value + " is not a valid subject choice")
     
+    def print_book_count(self, count):
+        print("\n" + str(count) + " books were found")
+    
     def print_books(self, books):
+        if len(books) == 0:
+            print("\nThere are no more books")
         for book in books:
             print()
             for key in book.keys():

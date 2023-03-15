@@ -19,11 +19,10 @@ class CartModel:
             if count == 0:
                 query ="INSERT INTO cart (userid, isbn, qty) VALUES (%s, %s, %s)"
                 cursor.execute(query, (userid, isbn, quantity))
-                connection.commit()
             else:
                 query ="UPDATE cart SET qty = %s WHERE userid = %s AND isbn = %s"
                 cursor.execute(query, (quantity, userid, isbn))
-                connection.commit()
+            connection.commit()
         except Error as error:
             if connection:
                 connection.rollback()

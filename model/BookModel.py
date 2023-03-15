@@ -20,9 +20,28 @@ class BookModel:
             subjects = cursor.fetchall()
             return self.conv_one_value_tupl_to_dict(subjects)
         except Error as error:
-            if connection:
-                connection.rollback()
             raise DBError("Database error, failed to fetch subjects") from error
+        finally:
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
+
+    def get_count_by_subject(self, subject):
+        try:
+            connection = None
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor()
+            query = "SELECT COUNT(*) FROM books WHERE subject = %s"
+            cursor.execute(query, (subject,))
+            return cursor.fetchall()[0][0]
+        except Error as error:
+            raise DBError("Database error, failed to get book count") from error
         finally:
             if connection:
                 if connection.is_connected():
@@ -44,9 +63,28 @@ class BookModel:
             books = cursor.fetchall()
             return self.make_books_pretty(books)
         except Error as error:
-            if connection:
-                connection.rollback()
             raise DBError("Database error, failed to fetch books") from error
+        finally:
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
+
+    def get_count_by_author(self, search_term):
+        try:
+            connection = None
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor()
+            query = """SELECT COUNT(*) FROM books WHERE author LIKE concat("%", %s, "%")"""
+            cursor.execute(query, (search_term,))
+            return cursor.fetchall()[0][0]
+        except Error as error:
+            raise DBError("Database error, failed to get book count") from error
         finally:
             if connection:
                 if connection.is_connected():
@@ -68,9 +106,28 @@ class BookModel:
             books = cursor.fetchall()
             return self.make_books_pretty(books)
         except Error as error:
-            if connection:
-                connection.rollback()
             raise DBError("Database error, failed to fetch books") from error
+        finally:
+            if connection:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
+
+    def get_count_by_title(self, search_term):
+        try:
+            connection = None
+            connection = connect(
+                host="localhost",
+                database="book_store",
+                user=os.environ["USER"],
+                password=os.environ["PASSWORD"]
+            )
+            cursor = connection.cursor()
+            query = """SELECT COUNT(*) FROM books WHERE title LIKE concat("%", %s, "%")"""
+            cursor.execute(query, (search_term,))
+            return cursor.fetchall()[0][0]
+        except Error as error:
+            raise DBError("Database error, failed to get book count") from error
         finally:
             if connection:
                 if connection.is_connected():
@@ -92,8 +149,6 @@ class BookModel:
             books = cursor.fetchall()
             return self.make_books_pretty(books)
         except Error as error:
-            if connection:
-                connection.rollback()
             raise DBError("Database error, failed to fetch books") from error
         finally:
             if connection:
@@ -151,8 +206,6 @@ class BookModel:
                 return True
             return False
         except Error as error:
-            if connection:
-                connection.rollback()
             raise DBError("Database error, failed to check ISBN") from error
         finally:
             if connection:
